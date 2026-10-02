@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LingoLearn</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon">L</div>
+        <div>
+          <h1 class="logo-title">LingoLearn</h1>
+          <p class="logo-subtitle">İngilizce Öğrenme Asistanı</p>
+        </div>
+      </div>
+      <div class="switch-container" title="Eklentiyi Aç/Kapat">
+        <label class="switch">
+          <input type="checkbox" id="toggle-active" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="words-tab">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+        </svg>
+        <span>Kelime Defteri</span>
+      </button>
+      <button class="nav-tab" data-tab="quiz-tab">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/>
+        </svg>
+        <span>Pratik / Test</span>
+      </button>
+      <button class="nav-tab" data-tab="settings-tab">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+        </svg>
+        <span>Ayarlar</span>
+      </button>
+    </nav>
+
+    <!-- TAB 1: KELİME DEFTERİ -->
+    <main class="tab-content active" id="words-tab">
+      <div class="search-bar-container">
+        <input type="text" id="search-input" placeholder="Kaydedilen kelimelerde ara..." />
+      </div>
+
+      <div class="stats-bar">
+        <span>Toplam: <strong id="total-words-count">0</strong> kelime</span>
+        <span>Öğrenilen: <strong id="mastered-words-count">0</strong></span>
+      </div>
+
+      <div class="word-list" id="word-list">
+        <!-- Dinamik olarak doldurulacak -->
+      </div>
+
+      <div class="empty-state" id="empty-state" style="display: none;">
+        <div class="empty-icon">💡</div>
+        <p class="empty-title">Henüz kelime kaydetmediniz</p>
+        <p class="empty-desc">Web sitelerinde bir metin seçin ve "Deftere Ekle" butonuna tıklayarak kelimeleri buraya ekleyin.</p>
+      </div>
+    </main>
+
+    <!-- TAB 2: PRATİK / TEST -->
+    <section class="tab-content" id="quiz-tab">
+      <div class="quiz-container" id="quiz-container">
+        <div class="flashcard" id="flashcard">
+          <div class="card-inner" id="card-inner">
+            <div class="card-front">
+              <span class="card-badge">İngilizce</span>
+              <h2 id="quiz-word" class="card-word">Kelime</h2>
+              <div id="quiz-phonetic" class="card-phonetic"></div>
+              <p class="card-hint">Anlamını görmek için dokunun</p>
+              <button class="icon-btn" id="quiz-speak-btn" title="Dinle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="card-back">
+              <span class="card-badge">Türkçe Anlamı</span>
+              <h2 id="quiz-translation" class="card-word">Çeviri</h2>
+              <div id="quiz-context" class="card-context"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-controls">
+          <button class="btn btn-secondary" id="btn-next-quiz">Sonraki Kelime &rarr;</button>
+        </div>
+      </div>
+
+      <div class="empty-state" id="quiz-empty-state" style="display: none;">
+        <div class="empty-icon">🎯</div>
+        <p class="empty-title">Pratik Yapacak Kelime Yok</p>
+        <p class="empty-desc">Pratik yapabilmek için web sayfalarından en az 1 kelime kaydetmeniz gerekmektedir.</p>
+      </div>
+    </section>
+
+    <!-- TAB 3: AYARLAR -->
+    <section class="tab-content" id="settings-tab">
+      <div class="settings-group">
+        <h3 class="settings-title">Çeviri Davranışı</h3>
+        
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-label">Tetikleme Modu</span>
+            <span class="setting-desc">Metin seçildiğinde ne yapılacağını seçin</span>
+          </div>
+          <select id="trigger-mode-select" class="form-select">
+            <option value="badge">Simge Göster (Önerilen)</option>
+            <option value="instant">Doğrudan Çevir</option>
+          </select>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-label">Sayfada Otomatik Algıla</span>
+            <span class="setting-desc">Web sayfalarındaki yabancı kelimeleri otomatik fark et ve vurgula</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-autoscan" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-label">Çift Tıklamayla Anlam Bak</span>
+            <span class="setting-desc">Kelimeye çift tıklandığında anında anlam penceresini aç</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-doubleclick" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-label">Alt + Tıklama Algılama</span>
+            <span class="setting-desc">Alt tuşuna basılı tutup kelimeye tıklayarak doğrudan algıla</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-altclick" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-label">Resimlerdeki Kelimeleri Oku (OCR)</span>
+            <span class="setting-desc">Görseller üzerindeki İngilizce yazıları tespit et ve oku</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-imageocr" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-label">Otomatik Telaffuz</span>
+            <span class="setting-desc">Çeviri açıldığında İngilizce telaffuzu otomatik çal</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-autopronounce">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h3 class="settings-title">Veri Yönetimi</h3>
+        <div class="setting-actions">
+          <button class="btn btn-outline" id="btn-export-words">Kelimeleri İndir (JSON)</button>
+          <button class="btn btn-danger-outline" id="btn-clear-words">Tüm Kelimeleri Temizle</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

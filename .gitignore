@@ -1,0 +1,31 @@
+# LingoLearn Chrome Extension - .gitignore
+
+# Tesseract büyük model dosyaları (topluluktan indirilebilir)
+lib/*.traineddata
+lib/*.gz
+
+# Node / NPM
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build/Dist çıktıları
+dist/
+build/
+*.zip
+*.crx
+*.pem
+
+# Editör ve OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+*.log
+
+# Test dosyaları (yerel)
+test-page.html
+test-quote.png
